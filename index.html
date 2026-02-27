@@ -4,1137 +4,674 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Northern Sky Livestock | The Kundingers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --green:  #2e6b2e;
+      --green:       #2e6b2e;
+      --green-dark:  #1a4a1a;
       --green-light: #4a8f3f;
-      --green-dark: #1a4a1a;
-      --blue:   #1a4a8c;
-      --blue-light: #2e6bbf;
-      --gold:   #d4a017;
-      --gold-light: #f0c030;
-      --cream:  #f5f0e8;
-      --tan:    #e8dcc8;
-      --dark:   #1a1a14;
-      --text:   #2c2c1e;
+      --blue:        #1a4a8c;
+      --gold:        #d4a017;
+      --gold-lt:     #f0c030;
+      --cream:       #f5f0e8;
+      --tan:         #e8dcc8;
+      --dark:        #1a1a14;
+      --text:        #2c2c1e;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
 
-    body {
-      background: var(--cream);
-      color: var(--text);
-      font-family: 'Lato', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 4rem;
-      height: 70px;
-      background: rgba(26, 74, 26, 0.96);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px;
+      background: rgba(26,74,26,0.97);
       backdrop-filter: blur(8px);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
     }
-    .nav-brand {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-    }
-    .nav-brand span { color: var(--gold-light); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-brand { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+    .nav-brand img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; background: white; }
+    .nav-brand-text { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; line-height: 1.2; }
+    .nav-brand-text span { color: var(--gold-lt); }
+    .nav-brand-sub { font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.55); font-family: 'Lato', sans-serif; text-transform: uppercase; }
+
+    .nav-links { display: flex; list-style: none; gap: 0.25rem; }
     .nav-links a {
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.82);
       text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
       font-weight: 700;
-      transition: color 0.2s;
+      padding: 0.45rem 0.9rem;
+      border-radius: 3px;
+      transition: all 0.2s;
     }
-    .nav-links a:hover { color: var(--gold-light); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.1); }
+    .nav-links a.sale-link {
+      background: var(--gold);
+      color: var(--dark) !important;
+      padding: 0.45rem 1.1rem;
+    }
+    .nav-links a.sale-link:hover { background: var(--gold-lt); transform: translateY(-1px); }
 
-    /* ─── HERO ─── */
-    .hero {
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+
+    /* ── HERO ── */
+    #home {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background:
-        radial-gradient(ellipse at 20% 80%, rgba(46,107,46,0.35) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 20%, rgba(26,74,140,0.25) 0%, transparent 55%),
-        linear-gradient(160deg, #1a2e14 0%, #0e1e0a 40%, #101c2a 100%);
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #1a2e14 0%, #0e1e0a 45%, #101c2a 100%);
+      position: relative; overflow: hidden;
+      padding: 100px 2rem 3rem;
     }
-
-    /* Subtle rolling hills SVG overlay */
-    .hero-hills {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 40%;
-      opacity: 0.12;
-    }
-
-    /* Animated grain overlay */
-    .hero::before {
+    #home::after {
       content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.035;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
+      background: linear-gradient(to top, rgba(26,74,26,0.25), transparent);
       pointer-events: none;
     }
+    .stars { position: absolute; inset: 0; pointer-events: none; }
+    .star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle var(--d) ease-in-out infinite; opacity: 0; }
+    @keyframes twinkle { 0%,100%{opacity:0} 50%{opacity:var(--op)} }
 
-    /* Stars */
-    .stars {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .hero-wrap {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 1.4rem;
+      animation: riseUp 1.1s ease both;
     }
-    .star-dot {
-      position: absolute;
-      border-radius: 50%;
-      background: white;
-      animation: twinkle var(--d, 3s) ease-in-out infinite;
-      opacity: 0;
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; }
-      50% { opacity: var(--max-op, 0.7); }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 2rem;
-      animation: fadeUp 1.2s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes riseUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 
     .hero-logo {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      border: 3px solid rgba(212,160,23,0.6);
-      box-shadow: 0 0 60px rgba(212,160,23,0.3), 0 0 120px rgba(46,107,46,0.3);
-      object-fit: contain;
-      background: white;
-      animation: fadeUp 1.2s 0.2s ease both;
-      opacity: 0;
+      width: 200px; height: 200px; border-radius: 50%;
+      border: 3px solid rgba(212,160,23,0.65);
+      box-shadow: 0 0 50px rgba(212,160,23,0.25), 0 0 100px rgba(46,107,46,0.25);
+      object-fit: contain; background: white;
+      animation: riseUp 1.1s 0.2s ease both; opacity: 0;
     }
-
-    .hero-eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold-light);
-      font-weight: 700;
-      animation: fadeUp 1.2s 0.4s ease both;
-      opacity: 0;
+    .hero-eye {
+      font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold-lt); font-weight: 700;
+      animation: riseUp 1.1s 0.35s ease both; opacity: 0;
     }
-
     .hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.05;
-      animation: fadeUp 1.2s 0.5s ease both;
-      opacity: 0;
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      font-weight: 800; color: #fff; line-height: 1.05;
+      animation: riseUp 1.1s 0.45s ease both; opacity: 0;
     }
-    .hero-title em {
-      font-style: italic;
-      color: var(--gold-light);
-    }
-
+    .hero-title em { font-style: italic; color: var(--gold-lt); }
     .hero-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      font-style: italic;
-      color: rgba(255,255,255,0.7);
-      max-width: 520px;
-      line-height: 1.6;
-      animation: fadeUp 1.2s 0.65s ease both;
-      opacity: 0;
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 1.35rem; color: rgba(255,255,255,0.68);
+      max-width: 500px; line-height: 1.65;
+      animation: riseUp 1.1s 0.55s ease both; opacity: 0;
     }
-
-    .hero-cta {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp 1.2s 0.8s ease both;
-      opacity: 0;
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: riseUp 1.1s 0.7s ease both; opacity: 0;
     }
     .btn {
-      padding: 0.85rem 2.2rem;
-      border-radius: 3px;
-      font-size: 0.82rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 700;
-      text-decoration: none;
-      transition: all 0.25s;
-      cursor: pointer;
-      border: none;
-      font-family: 'Lato', sans-serif;
+      padding: 0.82rem 2rem; border-radius: 3px; text-decoration: none;
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 700; font-family: 'Lato', sans-serif;
+      border: none; cursor: pointer; transition: all 0.22s;
     }
-    .btn-primary {
-      background: var(--gold);
-      color: var(--dark);
-      box-shadow: 0 4px 20px rgba(212,160,23,0.4);
-    }
-    .btn-primary:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(212,160,23,0.5);
-    }
-    .btn-outline {
-      background: transparent;
-      color: #fff;
-      border: 2px solid rgba(255,255,255,0.4);
-    }
-    .btn-outline:hover {
-      border-color: #fff;
-      background: rgba(255,255,255,0.08);
-      transform: translateY(-2px);
-    }
+    .btn-gold { background: var(--gold); color: var(--dark); box-shadow: 0 4px 18px rgba(212,160,23,0.35); }
+    .btn-gold:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.35); }
+    .btn-ghost:hover { border-color: #fff; transform: translateY(-2px); background: rgba(255,255,255,0.07); }
 
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      color: rgba(255,255,255,0.4);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      animation: fadeUp 1.2s 1.2s ease both;
-      opacity: 0;
+    /* ── SECTIONS ── */
+    .page-section { padding: 80px 2rem; }
+    .page-section:nth-child(even) { background: var(--tan); }
+    .section-wrap { max-width: 1060px; margin: 0 auto; }
+    .sec-label {
+      font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+      font-weight: 700; color: var(--green); margin-bottom: 0.6rem;
     }
-    .scroll-arrow {
-      width: 24px;
-      height: 24px;
-      border-right: 2px solid rgba(255,255,255,0.3);
-      border-bottom: 2px solid rgba(255,255,255,0.3);
-      transform: rotate(45deg);
-      animation: bounce 1.6s ease-in-out infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50% { transform: rotate(45deg) translateY(5px); }
-    }
-
-    /* ─── SECTION BASE ─── */
-    section { padding: 7rem 2rem; }
-    .section-inner { max-width: 1100px; margin: 0 auto; }
-
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--green);
-      margin-bottom: 0.75rem;
-    }
-    .section-title {
+    .sec-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      color: var(--dark);
-      line-height: 1.15;
-      margin-bottom: 1.2rem;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; color: var(--dark); line-height: 1.15; margin-bottom: 0.8rem;
     }
-    .section-title em { color: var(--blue); font-style: italic; }
-    .divider {
-      width: 60px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--green), var(--gold));
-      border-radius: 2px;
-      margin-bottom: 2rem;
-    }
-    .section-body {
+    .sec-title em { color: var(--blue); font-style: italic; }
+    .bar { width: 52px; height: 4px; background: linear-gradient(90deg, var(--green), var(--gold)); border-radius: 2px; margin-bottom: 1.8rem; }
+    .sec-body {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      line-height: 1.8;
-      color: #3a3a2a;
-      max-width: 680px;
+      font-size: 1.2rem; line-height: 1.85; color: #3a3a2a; max-width: 660px;
     }
 
-    /* ─── ABOUT ─── */
-    #about { background: var(--cream); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .about-image-wrap {
-      position: relative;
-    }
-    .about-image-box {
-      width: 100%;
-      aspect-ratio: 4/5;
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; }
+    .about-img-wrap { position: relative; }
+    .about-img-box {
+      width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden;
       background: linear-gradient(135deg, var(--green-dark) 0%, var(--blue) 100%);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 12px 12px 0 var(--tan), 14px 14px 0 var(--green);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;
+      box-shadow: 10px 10px 0 var(--tan), 12px 12px 0 var(--green);
+      padding: 2.5rem;
     }
-    .about-image-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='60%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%234a8f3f' stop-opacity='0.6'/%3E%3Cstop offset='100%25' stop-color='%231a2e14' stop-opacity='0.9'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='500'/%3E%3C/svg%3E");
-      background-size: cover;
+    .about-img-box img { width: 70%; border-radius: 50%; border: 3px solid rgba(212,160,23,0.5); background: white; }
+    .about-quote {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 1.05rem; color: rgba(255,255,255,0.75); text-align: center; line-height: 1.6;
     }
-    .about-image-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 2rem;
-    }
-    .about-bull-icon {
-      font-size: 6rem;
-      filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
-    }
-    .about-image-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-style: italic;
-      color: rgba(255,255,255,0.85);
-      text-align: center;
-      line-height: 1.6;
-    }
-
     .about-badge {
-      position: absolute;
-      bottom: -1.5rem;
-      right: -1.5rem;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: var(--gold);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(212,160,23,0.5);
-      z-index: 2;
+      position: absolute; bottom: -1.2rem; right: -1.2rem;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: var(--gold); display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 4px 18px rgba(212,160,23,0.45); z-index: 2;
     }
-    .about-badge-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--dark);
-      line-height: 1;
-    }
-    .about-badge-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--dark);
-      text-align: center;
-      line-height: 1.3;
-    }
+    .badge-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; color: var(--dark); line-height: 1; }
+    .badge-sub { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dark); text-align: center; line-height: 1.3; }
 
-    .stats-row {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2.5rem;
-    }
-    .stat {
-      flex: 1;
-      border-top: 3px solid var(--green);
-      padding-top: 1rem;
-    }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--green);
-    }
-    .stat-label {
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #666;
-      font-weight: 700;
-      margin-top: 0.25rem;
-    }
-
-    /* ─── BREED ─── */
-    #breed {
-      background: linear-gradient(180deg, var(--green-dark) 0%, #0e1e0a 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    #breed::before {
-      content: '';
-      position: absolute;
-      top: -100px; right: -200px;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(26,74,140,0.2) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    #breed .section-label { color: var(--gold-light); }
-    #breed .section-title { color: #fff; }
-    #breed .section-title em { color: var(--gold-light); }
-    #breed .section-body { color: rgba(255,255,255,0.75); }
-    #breed .divider { background: linear-gradient(90deg, var(--gold), var(--green-light)); }
-
-    .breed-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-    .breed-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      padding: 2rem 1.6rem;
-      transition: transform 0.3s, background 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .breed-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--green-light));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s;
-    }
-    .breed-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); }
-    .breed-card:hover::before { transform: scaleX(1); }
-    .breed-card-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .breed-card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.6rem;
-    }
-    .breed-card-body {
-      font-size: 0.9rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.6);
-    }
-
-    /* ─── HERD ─── */
-    #herd { background: var(--tan); }
-    .herd-intro {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 4rem;
-      align-items: start;
-      margin-bottom: 4rem;
-    }
-    .herd-cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-    .herd-card {
-      background: #fff;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    /* ── ANIMALS ── */
+    .animals-intro { margin-bottom: 3rem; }
+    .animal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+    .animal-card {
+      background: #fff; border-radius: 6px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    .herd-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+    .animal-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,0.13); }
+    .animal-card-top {
+      height: 140px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
     }
-    .herd-card-img {
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      position: relative;
-      overflow: hidden;
+    .ac-green  { background: linear-gradient(135deg, var(--green-dark), var(--green-light)); }
+    .ac-blue   { background: linear-gradient(135deg, #0a2a5a, #2e6bbf); }
+    .ac-gold   { background: linear-gradient(135deg, #6b4800, var(--gold)); }
+    .ac-brown  { background: linear-gradient(135deg, #5a3a1a, #9a6030); }
+    .ac-teal   { background: linear-gradient(135deg, #0a3a3a, #2a7070); }
+    .ac-forest { background: linear-gradient(135deg, #1a3a10, #3a7020); }
+    .animal-tag {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.45); color: #fff;
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 2px;
     }
-    .herd-card-img.gold-bg { background: linear-gradient(135deg, #8a6800, var(--gold)); }
-    .herd-card-img.green-bg { background: linear-gradient(135deg, var(--green-dark), var(--green-light)); }
-    .herd-card-img.blue-bg { background: linear-gradient(135deg, #0a2a5a, var(--blue-light)); }
-    .herd-card-img.tan-bg { background: linear-gradient(135deg, #6b5030, #a07848); }
-    .herd-card-info { padding: 1.2rem 1.4rem; }
-    .herd-card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 0.3rem;
-    }
-    .herd-card-tag {
-      display: inline-block;
-      background: var(--green);
-      color: #fff;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 700;
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-      margin-bottom: 0.6rem;
-    }
-    .herd-card-desc {
-      font-size: 0.88rem;
-      color: #666;
-      line-height: 1.6;
+    .animal-info { padding: 1.1rem 1.3rem 1.3rem; }
+    .animal-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 0.4rem; }
+    .animal-desc { font-size: 0.87rem; color: #666; line-height: 1.6; }
+    .animal-sale-badge {
+      display: inline-block; margin-top: 0.6rem;
+      background: var(--green); color: #fff;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.18rem 0.55rem; border-radius: 2px;
     }
 
-    /* ─── SHOW RECORD ─── */
-    #shows {
-      background: var(--cream);
+    /* ── FOR SALE ── */
+    #sale { background: var(--green-dark); }
+    #sale .sec-label { color: var(--gold-lt); }
+    #sale .sec-title { color: #fff; }
+    #sale .sec-title em { color: var(--gold-lt); }
+    #sale .sec-body { color: rgba(255,255,255,0.72); }
+    #sale .bar { background: linear-gradient(90deg, var(--gold), var(--green-light)); }
+    .sale-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; margin-top: 3rem; }
+    .sale-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; overflow: hidden; transition: all 0.3s;
     }
-    .shows-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 5rem;
-      align-items: start;
+    .sale-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+    .sale-card-top {
+      height: 130px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
     }
-    .trophy-list { margin-top: 2rem; }
-    .trophy-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1.2rem;
-      padding: 1.2rem 0;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+    .sold-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
     }
-    .trophy-icon {
-      font-size: 1.8rem;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
+    .sold-label {
+      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800;
+      color: #fff; letter-spacing: 0.1em; text-transform: uppercase;
+      border: 3px solid #fff; padding: 0.2rem 0.8rem; transform: rotate(-10deg);
+      opacity: 0.8;
     }
-    .trophy-year {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--green);
-      font-weight: 700;
-      margin-bottom: 0.2rem;
+    .sale-card-body { padding: 1.2rem 1.4rem 1.4rem; }
+    .sale-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+    .sale-detail { font-size: 0.83rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 0.8rem; }
+    .sale-price {
+      font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+      color: var(--gold-lt);
     }
-    .trophy-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--dark);
-      line-height: 1.3;
+    .sale-cta {
+      display: inline-block; margin-top: 0.7rem;
+      background: var(--gold); color: var(--dark);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+      padding: 0.45rem 1rem; border-radius: 3px; text-decoration: none; transition: all 0.2s;
     }
-    .trophy-desc {
-      font-size: 0.85rem;
-      color: #777;
-      margin-top: 0.2rem;
+    .sale-cta:hover { background: var(--gold-lt); }
+    .sale-note {
+      margin-top: 3rem; padding: 1.6rem 2rem;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-left: 4px solid var(--gold); border-radius: 4px;
     }
+    .sale-note p { color: rgba(255,255,255,0.75); font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; line-height: 1.7; }
+    .sale-note strong { color: var(--gold-lt); }
 
-    .show-promo {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--green-dark) 100%);
-      border-radius: 8px;
-      padding: 3rem;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: start; margin-top: 2.5rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.6rem; }
+    .c-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .c-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .c-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--green); margin-bottom: 0.25rem; }
+    .c-value { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text); line-height: 1.5; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+    .form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: 0.35rem; }
+    .fl { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; color: #666; }
+    .fc {
+      background: #fff; border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 3px; padding: 0.72rem 0.9rem;
+      font-size: 0.95rem; font-family: 'Lato', sans-serif; color: var(--text);
+      outline: none; transition: border-color 0.2s;
     }
-    .show-promo::before {
-      content: '★';
-      position: absolute;
-      right: -1rem;
-      top: -2rem;
-      font-size: 14rem;
-      color: rgba(255,255,255,0.04);
-      line-height: 1;
+    .fc:focus { border-color: var(--green); }
+    textarea.fc { resize: vertical; min-height: 110px; }
+    .btn-send {
+      background: var(--green); color: #fff;
+      border: none; padding: 0.9rem 2.2rem;
+      font-family: 'Lato', sans-serif; font-size: 0.78rem;
+      letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700;
+      border-radius: 3px; cursor: pointer; align-self: flex-start;
+      transition: all 0.22s; box-shadow: 0 4px 16px rgba(46,107,46,0.3);
     }
-    .show-promo-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .show-promo-body {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 2rem;
-    }
-    .show-upcoming {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      padding: 1.2rem 1.5rem;
-    }
-    .show-upcoming-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-light);
-      font-weight: 700;
-      margin-bottom: 0.7rem;
-    }
-    .show-event {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .show-event:last-child { border-bottom: none; }
-    .show-event-name { font-weight: 600; font-size: 0.9rem; }
-    .show-event-date { font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+    .btn-send:hover { background: var(--green-light); transform: translateY(-2px); }
 
-    /* ─── CONTACT ─── */
-    #contact {
-      background: var(--green-dark);
-      color: #fff;
-    }
-    #contact .section-label { color: var(--gold-light); }
-    #contact .section-title { color: #fff; }
-    #contact .divider { background: linear-gradient(90deg, var(--gold), var(--green-light)); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-      margin-top: 3rem;
-    }
-    .contact-info { display: flex; flex-direction: column; gap: 1.8rem; }
-    .contact-item {
-      display: flex;
-      gap: 1.2rem;
-      align-items: flex-start;
-    }
-    .contact-icon {
-      font-size: 1.5rem;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-    .contact-item-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--gold-light);
-      margin-bottom: 0.3rem;
-    }
-    .contact-item-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.5;
-    }
-
-    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: rgba(255,255,255,0.6);
-    }
-    .form-control {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 3px;
-      padding: 0.75rem 1rem;
-      color: #fff;
-      font-size: 0.95rem;
-      font-family: 'Lato', sans-serif;
-      transition: border-color 0.2s, background 0.2s;
-      outline: none;
-    }
-    .form-control::placeholder { color: rgba(255,255,255,0.3); }
-    .form-control:focus {
-      border-color: var(--gold);
-      background: rgba(255,255,255,0.1);
-    }
-    textarea.form-control { resize: vertical; min-height: 120px; }
-
-    .btn-submit {
-      background: var(--gold);
-      color: var(--dark);
-      border: none;
-      padding: 1rem 2.5rem;
-      font-family: 'Lato', sans-serif;
-      font-size: 0.82rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 700;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.25s;
-      align-self: flex-start;
-      box-shadow: 0 4px 20px rgba(212,160,23,0.3);
-    }
-    .btn-submit:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(212,160,23,0.4);
-    }
-
-    /* ─── FOOTER ─── */
+    /* ── FOOTER ── */
     footer {
-      background: var(--dark);
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      padding: 2.5rem;
-      font-size: 0.85rem;
+      background: var(--dark); color: rgba(255,255,255,0.45);
+      text-align: center; padding: 2.2rem;
+      font-size: 0.82rem;
     }
-    footer strong { color: rgba(255,255,255,0.8); }
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--gold-light);
-      margin-bottom: 0.5rem;
+    footer strong { color: rgba(255,255,255,0.75); }
+    .ft-brand { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold-lt); margin-bottom: 0.4rem; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 860px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none; flex-direction: column; position: absolute;
+        top: 68px; left: 0; right: 0;
+        background: rgba(26,74,26,0.98); padding: 1rem;
+        gap: 0.15rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.7rem 1rem; width: 100%; }
+      nav { padding: 0 1.3rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .animal-grid, .sale-grid { grid-template-columns: 1fr 1fr; }
+      .form-row2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .animal-grid, .sale-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.4rem; }
     }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      nav { padding: 0 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .about-grid,
-      .herd-intro,
-      .shows-layout,
-      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .breed-grid { grid-template-columns: 1fr 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .stats-row { flex-wrap: wrap; }
-    }
-    @media (max-width: 600px) {
-      nav { padding: 0 1rem; }
-      .nav-links { display: none; }
-      section { padding: 5rem 1.2rem; }
-      .breed-grid { grid-template-columns: 1fr; }
-      .herd-cards { grid-template-columns: 1fr; }
-    }
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-brand" href="#">Northern Sky <span>Livestock</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#breed">The Breed</a></li>
-      <li><a href="#herd">Our Herd</a></li>
-      <li><a href="#shows">Show Record</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="stars" id="stars"></div>
-    <svg class="hero-hills" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,200 C200,80 400,260 600,180 C800,100 1000,240 1200,160 C1350,100 1420,180 1440,200 L1440,300 L0,300 Z" fill="#4a8f3f"/>
-      <path d="M0,240 C300,140 500,280 700,220 C900,160 1100,260 1300,200 C1380,170 1430,220 1440,240 L1440,300 L0,300 Z" fill="#2e6b2e"/>
-    </svg>
-    <div class="hero-content">
-      <!-- Replace src with your actual logo path -->
-      <img class="hero-logo" src=" https://github.com/microgeekrogue/Northern-Sky-Livestock/blob/924fe9841ee6249ed0d1dea11fca99fe20b3fb98/images/Designer%20(2).png" alt="Northern Sky Livestock Logo" />
-      <p class="hero-eyebrow">Purebred Simmental Cattle · The Kundingers</p>
-      <h1 class="hero-title">Northern Sky<br><em>Livestock</em></h1>
-      <p class="hero-sub">Raising exceptional Simmental genetics with a passion for quality, performance, and the show ring.</p>
-      <div class="hero-cta">
-        <a href="#herd" class="btn btn-primary">View Our Herd</a>
-        <a href="#contact" class="btn btn-outline">Get In Touch</a>
-      </div>
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-brand" href="#home">
+    <img src="https://raw.githubusercontent.com/microgeekrogue/Northern-Sky-Livestock/928ca9eefd58ab421ed52ba6bf94426e043b33f1/images/Designer%20(2).png" alt="NSL Logo" />
+    <div>
+      <div class="nav-brand-text">Northern Sky <span>Livestock</span></div>
+      <div class="nav-brand-sub">The Kundingers</div>
     </div>
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="scroll-arrow"></div>
-    </div>
-  </section>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#animals">Our Animals</a></li>
+    <li><a href="#sale" class="sale-link">For Sale</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-inner">
-      <div class="about-grid">
-        <div class="about-image-wrap">
-          <div class="about-image-box">
-            <div class="about-image-inner">
-              <div class="about-bull-icon">🐂</div>
-              <p class="about-image-text">"We don't just raise cattle — we raise champions, one generation at a time."</p>
-            </div>
-          </div>
-          <div class="about-badge">
-            <div class="about-badge-num">NSL</div>
-            <div class="about-badge-label">Pure&shy;bred Simmental</div>
-          </div>
+<!-- HERO -->
+<section id="home">
+  <div class="stars" id="stars"></div>
+  <div class="hero-wrap">
+    <img class="hero-logo"
+      src="https://raw.githubusercontent.com/microgeekrogue/Northern-Sky-Livestock/928ca9eefd58ab421ed52ba6bf94426e043b33f1/images/Designer%20(2).png"
+      alt="Northern Sky Livestock" />
+    <p class="hero-eye">Purebred Simmental Cattle · The Kundingers</p>
+    <h1 class="hero-title">Northern Sky<br><em>Livestock</em></h1>
+    <p class="hero-sub">Raising and showing quality purebred Simmental cattle with pride.</p>
+    <div class="hero-btns">
+      <a href="#animals" class="btn btn-gold">View Our Animals</a>
+      <a href="#sale" class="btn btn-ghost">Animals For Sale</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page-section">
+  <div class="section-wrap">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-box">
+          <img src="https://raw.githubusercontent.com/microgeekrogue/Northern-Sky-Livestock/928ca9eefd58ab421ed52ba6bf94426e043b33f1/images/Designer%20(2).png" alt="NSL Logo" />
+          <p class="about-quote">"Raising exceptional Simmental genetics — one generation at a time."</p>
         </div>
-        <div>
-          <p class="section-label">Our Story</p>
-          <h2 class="section-title">A Family Farm<br>Built on <em>Passion</em></h2>
-          <div class="divider"></div>
-          <p class="section-body">
-            Northern Sky Livestock is a family-run operation dedicated to producing top-quality purebred Simmental cattle. We believe that exceptional animals come from exceptional care — quality genetics, thoughtful management, and a genuine love for the breed.
-          </p>
-          <p class="section-body" style="margin-top: 1rem;">
-            From the pasture to the show ring, every animal we raise carries our commitment to excellence. We take pride in breeding cattle that perform well both as working animals and as show-ring competitors.
-          </p>
-          <div class="stats-row">
-            <div class="stat">
-              <div class="stat-num">100%</div>
-              <div class="stat-label">Purebred<br>Registered</div>
-            </div>
-            <div class="stat">
-              <div class="stat-num">ASA</div>
-              <div class="stat-label">Registered<br>Seedstock</div>
-            </div>
-            <div class="stat">
-              <div class="stat-num">NSL</div>
-              <div class="stat-label">Northern Sky<br>Bloodlines</div>
-            </div>
-          </div>
+        <div class="about-badge">
+          <div class="badge-title">NSL</div>
+          <div class="badge-sub">Purebred<br>Simmental</div>
         </div>
       </div>
+      <div class="reveal">
+        <p class="sec-label">Our Story</p>
+        <h2 class="sec-title">A Family Farm Built<br>on <em>Passion</em></h2>
+        <div class="bar"></div>
+        <p class="sec-body">
+          Northern Sky Livestock is a family operation run by the Kundingers, dedicated to raising and showing top-quality purebred Simmental cattle. We believe great animals are the result of great care — superior genetics, thoughtful management, and a genuine love for the breed.
+        </p>
+        <p class="sec-body" style="margin-top:1rem;">
+          From our pastures to the show ring, every animal we raise reflects our commitment to excellence. We take pride in breeding cattle that are strong performers both on the farm and in open and junior shows alike.
+        </p>
+        <p class="sec-body" style="margin-top:1rem;">
+          Our herd is fully registered with the American Simmental Association, and we are always happy to talk cattle with fellow breeders, junior exhibitors, and commercial producers looking to improve their operations.
+        </p>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- BREED -->
-  <section id="breed">
-    <div class="section-inner">
-      <p class="section-label">Why Simmental</p>
-      <h2 class="section-title">The <em>Premier</em> Breed</h2>
-      <div class="divider"></div>
-      <p class="section-body">
-        Simmental cattle are among the world's most versatile and productive breeds — known for their outstanding growth, maternal excellence, and adaptability. We're proud to raise purebred Simmentals that carry these traits forward.
+<!-- ANIMALS -->
+<section id="animals" class="page-section">
+  <div class="section-wrap">
+    <div class="animals-intro reveal">
+      <p class="sec-label">The Herd</p>
+      <h2 class="sec-title">Our <em>Animals</em></h2>
+      <div class="bar"></div>
+      <p class="sec-body">
+        Our cattle are selected for structure, muscle, maternal ability, and disposition. We maintain a herd of bulls, donor females, and show prospects — with new genetics added each year through proven AI sires and elite flushes.
       </p>
-      <div class="breed-grid">
-        <div class="breed-card">
-          <div class="breed-card-icon">📈</div>
-          <div class="breed-card-title">Superior Growth</div>
-          <div class="breed-card-body">Simmentals are renowned for their exceptional rate of gain and heavy muscling, consistently producing animals at the top of the performance scale.</div>
+    </div>
+    <div class="animal-grid">
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-green">
+          <span class="animal-tag">Herd Sire</span>🐃
         </div>
-        <div class="breed-card">
-          <div class="breed-card-icon">🤱</div>
-          <div class="breed-card-title">Maternal Excellence</div>
-          <div class="breed-card-body">With high milk production and strong mothering instincts, Simmental cows raise vigorous, fast-growing calves year after year.</div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Northern Star</div>
+          <div class="animal-desc">Our cornerstone herd sire. Exceptional calving ease, outstanding muscle, and a quiet disposition that passes to his calves.</div>
         </div>
-        <div class="breed-card">
-          <div class="breed-card-icon">🏆</div>
-          <div class="breed-card-title">Show Ring Success</div>
-          <div class="breed-card-body">Combining muscle, structure, and presence, purebred Simmentals consistently command attention and respect in open and jackpot shows.</div>
+      </div>
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-gold">
+          <span class="animal-tag">Donor Dam</span>🐄
         </div>
-        <div class="breed-card">
-          <div class="breed-card-icon">🌾</div>
-          <div class="breed-card-title">Adaptability</div>
-          <div class="breed-card-body">Hardy and efficient on forage, Simmentals thrive in a wide range of climates and management systems, making them ideal for the northern plains.</div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Prairie Sky 01</div>
+          <div class="animal-desc">A phenotypically outstanding donor with a track record of producing show-winning, deep-bodied offspring season after season.</div>
         </div>
-        <div class="breed-card">
-          <div class="breed-card-icon">🧬</div>
-          <div class="breed-card-title">EPD Depth</div>
-          <div class="breed-card-body">Backed by robust American Simmental Association data, our bulls and females carry EPDs that allow confident selection for any goal.</div>
+      </div>
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-blue">
+          <span class="animal-tag">Show Bull</span>🐂
         </div>
-        <div class="breed-card">
-          <div class="breed-card-icon">❤️</div>
-          <div class="breed-card-title">Docile Temperament</div>
-          <div class="breed-card-body">Our herd is selected not only for performance but also for easy handling — a priority whether working cattle on the farm or fitting for the show.</div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Sky High</div>
+          <div class="animal-desc">Long-bodied and high-volumed young sire with the style and power to compete at any level of the open show circuit.</div>
+          <span class="animal-sale-badge">Available</span>
+        </div>
+      </div>
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-brown">
+          <span class="animal-tag">Show Heifer</span>🐄
+        </div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Golden Sky 22</div>
+          <div class="animal-desc">A flush sister heifer with exceptional style, a powerful front end, and the presence to win in any class.</div>
+          <span class="animal-sale-badge">Available</span>
+        </div>
+      </div>
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-teal">
+          <span class="animal-tag">Bred Heifer</span>🐄
+        </div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Winter Star 24</div>
+          <div class="animal-desc">A calving-ease bred heifer out of our top donor. Bred to NSL Northern Star for a spring calf. Perfect foundation female.</div>
+          <span class="animal-sale-badge">Available</span>
+        </div>
+      </div>
+      <div class="animal-card reveal">
+        <div class="animal-card-top ac-forest">
+          <span class="animal-tag">Bull Calf</span>🐂
+        </div>
+        <div class="animal-info">
+          <div class="animal-name">NSL Sky Rocket 25</div>
+          <div class="animal-desc">A promising spring bull calf with excellent growth data, a powerful top, and genetics that will work in any program.</div>
+          <span class="animal-sale-badge">Available</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- HERD -->
-  <section id="herd">
-    <div class="section-inner">
-      <div class="herd-intro">
-        <div>
-          <p class="section-label">Our Cattle</p>
-          <h2 class="section-title">Genetics That<br><em>Perform</em></h2>
-          <div class="divider"></div>
-          <p class="section-body">
-            Our herd is carefully selected for the traits that matter most: structure, muscle, maternal ability, and disposition. We work with elite AI sires and maintain a nucleus of proven donor cows to continuously improve our genetic base.
-          </p>
-          <p class="section-body" style="margin-top: 1rem;">
-            Bulls, heifers, and show prospects are available seasonally. Contact us to learn what's available or to discuss a private treaty.
-          </p>
-          <a href="#contact" class="btn btn-primary" style="margin-top: 1.8rem; display: inline-block;">Inquire About Animals</a>
+<!-- FOR SALE -->
+<section id="sale">
+  <div class="section-wrap page-section" style="padding-top:0; padding-bottom:0;">
+    <div style="padding: 80px 0;">
+      <div class="reveal">
+        <p class="sec-label">Available Now</p>
+        <h2 class="sec-title">Animals <em>For Sale</em></h2>
+        <div class="bar"></div>
+        <p class="sec-body">
+          We offer bulls, heifers, show prospects, and bred females throughout the year. All animals are ASA registered with full paperwork. Contact us for current pricing and availability.
+        </p>
+      </div>
+      <div class="sale-grid">
+        <div class="sale-card reveal">
+          <div class="sale-card-top ac-blue">🐂</div>
+          <div class="sale-card-body">
+            <div class="sale-name">NSL Sky High</div>
+            <div class="sale-detail">2-yr-old Show Bull · ASA Registered<br>Sire: NSL Northern Star · Dam: NSL Prairie Sky 01<br>CE: +8 | BW: -0.5 | WW: +62 | YW: +110</div>
+            <div class="sale-price">Price: Contact for Quote</div>
+            <a href="#contact" class="sale-cta">Inquire Now</a>
+          </div>
         </div>
-        <div class="herd-cards">
-          <div class="herd-card">
-            <div class="herd-card-img gold-bg">🐃</div>
-            <div class="herd-card-info">
-              <div class="herd-card-tag">Herd Sire</div>
-              <div class="herd-card-name">NSL Northern Star</div>
-              <div class="herd-card-desc">Our cornerstone herd sire with exceptional calving ease and show-stopping muscle.</div>
-            </div>
+        <div class="sale-card reveal">
+          <div class="sale-card-top ac-brown">🐄</div>
+          <div class="sale-card-body">
+            <div class="sale-name">NSL Golden Sky 22</div>
+            <div class="sale-detail">Show Heifer · ASA Registered<br>Flush Sister · Top-End Genetics<br>Multiple show wins in open competition</div>
+            <div class="sale-price">Price: Contact for Quote</div>
+            <a href="#contact" class="sale-cta">Inquire Now</a>
           </div>
-          <div class="herd-card">
-            <div class="herd-card-img green-bg">🐄</div>
-            <div class="herd-card-info">
-              <div class="herd-card-tag">Donor Dam</div>
-              <div class="herd-card-name">NSL Prairie Sky 01</div>
-              <div class="herd-card-desc">A phenomenal producer with deep-bodied calves and a track record in the show ring.</div>
-            </div>
+        </div>
+        <div class="sale-card reveal">
+          <div class="sale-card-top ac-teal">🐄</div>
+          <div class="sale-card-body">
+            <div class="sale-name">NSL Winter Star 24</div>
+            <div class="sale-detail">Bred Heifer · ASA Registered<br>Bred to NSL Northern Star · Due Spring 2026<br>Excellent maternal EPDs</div>
+            <div class="sale-price">Price: Contact for Quote</div>
+            <a href="#contact" class="sale-cta">Inquire Now</a>
           </div>
-          <div class="herd-card">
-            <div class="herd-card-img blue-bg">🐂</div>
-            <div class="herd-card-info">
-              <div class="herd-card-tag">Show Bull</div>
-              <div class="herd-card-name">NSL Sky High</div>
-              <div class="herd-card-desc">A long-bodied, high-volumed young sire ready for the open show circuit.</div>
-            </div>
+        </div>
+        <div class="sale-card reveal">
+          <div class="sale-card-top ac-forest">🐂</div>
+          <div class="sale-card-body">
+            <div class="sale-name">NSL Sky Rocket 25</div>
+            <div class="sale-detail">Spring Bull Calf · ASA Registered<br>Strong growth data & excellent structure<br>Ready for pasture or show prep</div>
+            <div class="sale-price">Price: Contact for Quote</div>
+            <a href="#contact" class="sale-cta">Inquire Now</a>
           </div>
-          <div class="herd-card">
-            <div class="herd-card-img tan-bg">🐄</div>
-            <div class="herd-card-info">
-              <div class="herd-card-tag">Show Heifer</div>
-              <div class="herd-card-name">NSL Golden Sky 22</div>
-              <div class="herd-card-desc">A standout flush sister heifer with exceptional style and a powerful front end.</div>
-            </div>
+        </div>
+        <div class="sale-card reveal">
+          <div class="sale-card-top ac-gold">
+            <div class="sold-overlay"><div class="sold-label">Sold</div></div>🐄
+          </div>
+          <div class="sale-card-body">
+            <div class="sale-name">NSL Starlight 23</div>
+            <div class="sale-detail">Open Heifer · ASA Registered<br>Placed 1st in her class at State Fair</div>
+            <div class="sale-price" style="color:rgba(255,255,255,0.4);">Sold</div>
+          </div>
+        </div>
+        <div class="sale-card reveal" style="background:rgba(255,255,255,0.03); border-style:dashed; display:flex; align-items:center; justify-content:center; min-height:240px; text-align:center;">
+          <div style="padding:2rem;">
+            <div style="font-size:2.5rem; margin-bottom:0.8rem;">📋</div>
+            <div style="font-family:'Playfair Display',serif; font-size:1rem; color:#fff; margin-bottom:0.5rem;">More Coming Soon</div>
+            <div style="font-size:0.85rem; color:rgba(255,255,255,0.5); line-height:1.6;">New calves and prospects listed as they become available. Join our mailing list to be notified.</div>
+            <a href="#contact" class="sale-cta" style="margin-top:1rem; display:inline-block;">Stay Updated</a>
           </div>
         </div>
       </div>
+      <div class="sale-note reveal">
+        <p>
+          <strong>Interested in private treaty or fall consignment?</strong> We sell animals year-round and can work with buyers to find the right fit for their program. All animals come with full ASA registration papers, health records, and EPD data. Delivery available. Contact The Kundingers directly to discuss.
+        </p>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SHOWS -->
-  <section id="shows">
-    <div class="section-inner">
-      <div class="shows-layout">
-        <div>
-          <p class="section-label">Show Ring</p>
-          <h2 class="section-title">Proven in the<br><em>Ring</em></h2>
-          <div class="divider"></div>
-          <p class="section-body">
-            We show our cattle at local, state, and national levels, using the show ring to benchmark our genetics against the best in the breed.
-          </p>
-          <div class="trophy-list">
-            <div class="trophy-item">
-              <div class="trophy-icon">🥇</div>
-              <div>
-                <div class="trophy-year">State Fair</div>
-                <div class="trophy-title">Grand Champion Simmental Bull</div>
-                <div class="trophy-desc">Open Show · NSL Northern Star</div>
-              </div>
-            </div>
-            <div class="trophy-item">
-              <div class="trophy-icon">🏆</div>
-              <div>
-                <div class="trophy-year">National Western</div>
-                <div class="trophy-title">Reserve Champion Purebred Heifer</div>
-                <div class="trophy-desc">Junior Show · NSL Golden Sky 22</div>
-              </div>
-            </div>
-            <div class="trophy-item">
-              <div class="trophy-icon">🎖️</div>
-              <div>
-                <div class="trophy-year">Regional Jackpot</div>
-                <div class="trophy-title">Champion Simmental Female</div>
-                <div class="trophy-desc">NSL Prairie Sky 01 daughter</div>
-              </div>
-            </div>
-            <div class="trophy-item">
-              <div class="trophy-icon">⭐</div>
-              <div>
-                <div class="trophy-year">Junior Preview Show</div>
-                <div class="trophy-title">Division Champion Bull Calf</div>
-                <div class="trophy-desc">NSL Sky High · Junior Exhibitor</div>
-              </div>
-            </div>
+<!-- CONTACT -->
+<section id="contact" class="page-section">
+  <div class="section-wrap">
+    <div class="reveal">
+      <p class="sec-label">Reach Out</p>
+      <h2 class="sec-title">Let's Talk <em>Cattle</em></h2>
+      <div class="bar"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-items reveal">
+        <p class="sec-body" style="margin-bottom:0.5rem;">Whether you're looking for your next herd sire, a show heifer, or just want to talk Simmentals — The Kundingers are always happy to hear from you.</p>
+        <div class="c-item">
+          <div class="c-icon">📍</div>
+          <div>
+            <div class="c-label">Location</div>
+            <div class="c-value">Your Farm Name Here<br>City, State ZIP</div>
           </div>
         </div>
-        <div class="show-promo">
-          <div class="show-promo-title">Upcoming Events &amp; Shows</div>
-          <div class="show-promo-body">Follow us at the ring this season. We're proud to represent the Simmental breed at events across the region.</div>
-          <div class="show-upcoming">
-            <div class="show-upcoming-label">2025 Show Schedule</div>
-            <div class="show-event">
-              <span class="show-event-name">Spring Preview Show</span>
-              <span class="show-event-date">March 2025</span>
-            </div>
-            <div class="show-event">
-              <span class="show-event-name">State Fair Open Show</span>
-              <span class="show-event-date">August 2025</span>
-            </div>
-            <div class="show-event">
-              <span class="show-event-name">Regional Jackpot</span>
-              <span class="show-event-date">September 2025</span>
-            </div>
-            <div class="show-event">
-              <span class="show-event-name">Fall Classic Sale</span>
-              <span class="show-event-date">October 2025</span>
-            </div>
+        <div class="c-item">
+          <div class="c-icon">📞</div>
+          <div>
+            <div class="c-label">Phone</div>
+            <div class="c-value">(000) 000-0000</div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">✉️</div>
+          <div>
+            <div class="c-label">Email</div>
+            <div class="c-value">your@email.com</div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📘</div>
+          <div>
+            <div class="c-label">Social Media</div>
+            <div class="c-value">Follow us on Facebook &amp; Instagram<br>for herd updates &amp; show results</div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-inner">
-      <p class="section-label">Reach Out</p>
-      <h2 class="section-title">Let's Talk <em>Cattle</em></h2>
-      <div class="divider"></div>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.75); margin-bottom: 0.5rem;">
-            Whether you're looking for your next show heifer, a herd sire, or just want to talk Simmentals — we'd love to hear from you. The Kundingers are passionate about this breed and happy to answer any questions.
-          </p>
-          <div class="contact-item">
-            <div class="contact-icon">📍</div>
-            <div>
-              <div class="contact-item-label">Location</div>
-              <div class="contact-item-value">Northern Sky Livestock<br>The Kundingers</div>
-            </div>
+      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <div class="form-row2">
+          <div class="fg">
+            <label class="fl">First Name</label>
+            <input type="text" class="fc" placeholder="John" />
           </div>
-          <div class="contact-item">
-            <div class="contact-icon">📞</div>
-            <div>
-              <div class="contact-item-label">Phone</div>
-              <div class="contact-item-value">(000) 000-0000</div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">✉️</div>
-            <div>
-              <div class="contact-item-label">Email</div>
-              <div class="contact-item-value">info@northernsky<br>livestock.com</div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">🌐</div>
-            <div>
-              <div class="contact-item-label">Social</div>
-              <div class="contact-item-value">Follow us on Facebook<br>&amp; Instagram for herd updates</div>
-            </div>
+          <div class="fg">
+            <label class="fl">Last Name</label>
+            <input type="text" class="fc" placeholder="Smith" />
           </div>
         </div>
-        <form class="contact-form" onsubmit="handleSubmit(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">First Name</label>
-              <input type="text" class="form-control" placeholder="John" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last Name</label>
-              <input type="text" class="form-control" placeholder="Smith" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" placeholder="john@example.com" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">I'm Interested In</label>
-            <select class="form-control">
-              <option value="" disabled selected>Select an option...</option>
-              <option>Purchasing a Bull</option>
-              <option>Purchasing a Heifer / Cow</option>
-              <option>Show Prospect</option>
-              <option>Embryos / Genetics</option>
-              <option>General Inquiry</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Message</label>
-            <textarea class="form-control" placeholder="Tell us what you're looking for..."></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Send Message →</button>
-        </form>
-      </div>
+        <div class="fg">
+          <label class="fl">Email</label>
+          <input type="email" class="fc" placeholder="john@example.com" />
+        </div>
+        <div class="fg">
+          <label class="fl">I'm Interested In</label>
+          <select class="fc">
+            <option value="" disabled selected>Select an option…</option>
+            <option>Purchasing a Bull</option>
+            <option>Purchasing a Heifer or Cow</option>
+            <option>Show Prospect</option>
+            <option>Bred Female</option>
+            <option>Embryos / Genetics</option>
+            <option>General Question</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Message</label>
+          <textarea class="fc" placeholder="Tell us what you're looking for…"></textarea>
+        </div>
+        <button type="submit" class="btn-send" id="sendBtn">Send Message →</button>
+      </form>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">Northern Sky Livestock</div>
-    <p>© 2025 <strong>The Kundingers</strong> · Purebred Simmental Cattle · All Rights Reserved</p>
-    <p style="margin-top: 0.4rem; font-size: 0.78rem;">American Simmental Association Registered Seedstock</p>
-  </footer>
+<!-- FOOTER -->
+<footer>
+  <div class="ft-brand">Northern Sky Livestock</div>
+  <p>© 2025 <strong>The Kundingers</strong> · Purebred Simmental Cattle · All Rights Reserved</p>
+  <p style="margin-top:0.3rem; font-size:0.75rem;">American Simmental Association Registered Seedstock</p>
+</footer>
 
-  <script>
-    // Generate stars
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 80; i++) {
-      const s = document.createElement('div');
-      s.className = 'star-dot';
-      const size = Math.random() * 2.5 + 0.5;
-      s.style.cssText = `
-        width: ${size}px;
-        height: ${size}px;
-        left: ${Math.random() * 100}%;
-        top: ${Math.random() * 70}%;
-        --d: ${(Math.random() * 4 + 2).toFixed(1)}s;
-        --max-op: ${(Math.random() * 0.5 + 0.3).toFixed(2)};
-        animation-delay: ${(Math.random() * 5).toFixed(2)}s;
-      `;
-      starsContainer.appendChild(s);
-    }
+<script>
+  // Stars
+  const sc = document.getElementById('stars');
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.2 + 0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*75}%;--d:${(Math.random()*4+2).toFixed(1)}s;--op:${(Math.random()*0.55+0.25).toFixed(2)};animation-delay:${(Math.random()*5).toFixed(1)}s`;
+    sc.appendChild(s);
+  }
 
-    // Scroll fade-in
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.opacity = '1';
-          e.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.1 });
+  // Scroll reveal
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-    document.querySelectorAll('.breed-card, .herd-card, .trophy-item, .stat').forEach(el => {
-      el.style.cssText += 'opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;';
-      observer.observe(el);
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+    navAs.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur && !a.classList.contains('sale-link'));
     });
+  });
 
-    // Form submit
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = '✓ Message Sent!';
-      btn.style.background = '#4a8f3f';
-      btn.style.color = '#fff';
-      setTimeout(() => {
-        btn.textContent = 'Send Message →';
-        btn.style.background = '';
-        btn.style.color = '';
-      }, 3000);
-    }
-  </script>
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  // Form
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('sendBtn');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = '#2e6b2e';
+    setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; }, 3000);
+  }
+</script>
 </body>
 </html>
